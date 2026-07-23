@@ -102,8 +102,8 @@ export default function Home() {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-28)' }}>
             <div style={{ display: 'flex', gap: 'var(--spacing-16)' }}>
-              <div style={{ padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-white)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
-                <Zap size={24} />
+              <div style={{ padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
+                <Zap size={24} color="var(--text-primary)" />
               </div>
               <div>
                 <h3 className="ui-large" style={{ color: 'var(--text-primary)', marginBottom: '4px' }}>100% Peer-to-Peer</h3>
@@ -114,8 +114,8 @@ export default function Home() {
             </div>
 
             <div style={{ display: 'flex', gap: 'var(--spacing-16)' }}>
-              <div style={{ padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-white)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
-                <Shield size={24} />
+              <div style={{ padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
+                <Shield size={24} color="var(--text-primary)" />
               </div>
               <div>
                 <h3 className="ui-large" style={{ color: 'var(--text-primary)', marginBottom: '4px' }}>Zero Storage & Private</h3>
@@ -126,8 +126,8 @@ export default function Home() {
             </div>
 
             <div style={{ display: 'flex', gap: 'var(--spacing-16)' }}>
-              <div style={{ padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-white)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
-                <Lock size={24} />
+              <div style={{ padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
+                <Lock size={24} color="var(--text-primary)" />
               </div>
               <div>
                 <h3 className="ui-large" style={{ color: 'var(--text-primary)', marginBottom: '4px' }}>Cross-Network Connections</h3>

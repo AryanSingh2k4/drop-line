@@ -58,12 +58,12 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
         padding: 'var(--spacing-48) var(--spacing-24)',
         backgroundColor: isDragging
           ? 'var(--surface-elevated)'
-          : 'var(--surface-white)',
+          : 'var(--surface-card)',
         textAlign: 'center',
         cursor: disabled ? 'not-allowed' : 'pointer',
         transition: 'all 0.2s ease',
         opacity: disabled ? 0.6 : 1,
-        boxShadow: isDragging ? '0 4px 20px rgba(0,0,0,0.06)' : 'none',
+        boxShadow: isDragging ? '0 4px 20px rgba(0,0,0,0.2)' : 'none',
       }}
     >
       <input
@@ -114,8 +114,8 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
           style={{
             marginTop: 'var(--spacing-20)',
             padding: 'var(--spacing-12) var(--spacing-24)',
-            backgroundColor: 'var(--action-fill)',
-            color: 'var(--surface-base)',
+            backgroundColor: 'var(--button-primary-bg)',
+            color: 'var(--button-primary-text)',
             borderRadius: 'var(--radius-md)',
             display: 'inline-block',
           }}

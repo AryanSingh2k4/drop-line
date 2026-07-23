@@ -29,7 +29,7 @@ export const PeerStatus: React.FC<PeerStatusProps> = ({ status }) => {
         alignItems: 'center',
         gap: 'var(--spacing-8)',
         padding: 'var(--spacing-6) var(--spacing-16)',
-        backgroundColor: 'var(--surface-white)',
+        backgroundColor: 'var(--surface-card)',
         border: '1px solid var(--border-subtle)',
         borderRadius: 'var(--radius-3xl)',
         boxShadow: '0 1px 2px rgba(0,0,0,0.03)',

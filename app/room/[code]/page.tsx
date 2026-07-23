@@ -67,7 +67,7 @@ export default function RoomPage() {
       {/* Room Code Card */}
       <div
         style={{
-          backgroundColor: 'var(--surface-elevated)',
+          backgroundColor: 'var(--surface-card)',
           border: '1px solid var(--border-subtle)',
           borderRadius: 'var(--radius-xl)',
           padding: 'var(--spacing-24)',
@@ -102,10 +102,10 @@ export default function RoomPage() {
             alignItems: 'center',
             gap: 'var(--spacing-8)',
             padding: 'var(--spacing-12) var(--spacing-20)',
-            backgroundColor: 'var(--surface-white)',
+            backgroundColor: 'var(--button-secondary-bg)',
             border: '1px solid var(--border-subtle)',
             borderRadius: 'var(--radius-md)',
-            color: 'var(--text-primary)',
+            color: 'var(--button-secondary-text)',
             transition: 'all 0.2s ease',
           }}
         >
@@ -129,7 +129,7 @@ export default function RoomPage() {
           marginBottom: 'var(--spacing-24)',
           padding: 'var(--spacing-16)',
           borderRadius: 'var(--radius-md)',
-          backgroundColor: 'var(--surface-white)',
+          backgroundColor: 'var(--surface-card)',
           border: '1px solid var(--border-subtle)',
         }}
       >

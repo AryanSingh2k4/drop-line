@@ -51,14 +51,14 @@
 }
 
 .card {
-  background-color: var(--surface-white);
+  background-color: var(--surface-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xl);
   padding: var(--spacing-32);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-24);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .inputGroup {
@@ -76,8 +76,8 @@
   padding: var(--spacing-12) var(--spacing-16);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  background-color: var(--surface-base);
-  color: var(--text-primary);
+  background-color: var(--input-bg);
+  color: var(--input-text);
   transition: border-color 0.2s ease;
 }
 
@@ -93,30 +93,41 @@
 .primaryButton {
   width: 100%;
   padding: var(--spacing-16);
-  background-color: var(--text-primary); /* The design calls for CTA filled with text color */
-  color: var(--surface-base); /* Inverted text */
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
   border-radius: var(--radius-md);
   text-align: center;
-  transition: opacity 0.2s ease;
+  transition: all 0.2s ease;
+  font-weight: 500;
 }
 
 .primaryButton:hover {
   opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .secondaryButton {
   width: 100%;
   padding: var(--spacing-16);
-  background-color: transparent;
-  color: var(--text-primary);
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   text-align: center;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  font-weight: 500;
 }
 
-.secondaryButton:hover {
+.secondaryButton:hover:not(:disabled) {
   background-color: var(--surface-elevated);
+}
+
+.secondaryButton:disabled {
+  background-color: var(--button-disabled-bg);
+  color: var(--button-disabled-text);
+  border-color: var(--border-subtle);
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .divider {

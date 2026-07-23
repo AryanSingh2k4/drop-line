@@ -20,7 +20,7 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
   return (
     <div
       style={{
-        backgroundColor: 'var(--surface-white)',
+        backgroundColor: 'var(--surface-card)',
         border: '1px solid var(--border-subtle)',
         borderRadius: 'var(--radius-lg)',
         padding: 'var(--spacing-16)',
@@ -28,7 +28,7 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
         alignItems: 'center',
         gap: 'var(--spacing-16)',
         marginBottom: 'var(--spacing-12)',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
       }}
     >
       {/* Thumbnail or Icon */}
@@ -46,7 +46,7 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
         }}
       >
         {isImage && file.url ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
+          /* eslint-disable-next-link @next/next/no-img-element */
           <img
             src={file.url}
             alt={file.name}
@@ -144,8 +144,8 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
             className="ui-medium"
             style={{
               padding: 'var(--spacing-8) var(--spacing-12)',
-              backgroundColor: 'var(--text-primary)',
-              color: 'var(--surface-base)',
+              backgroundColor: 'var(--button-primary-bg)',
+              color: 'var(--button-primary-text)',
               borderRadius: 'var(--radius-sm)',
               display: 'flex',
               alignItems: 'center',
