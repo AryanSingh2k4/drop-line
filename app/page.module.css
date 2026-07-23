@@ -1,8 +1,9 @@
 .container {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   width: 100vw;
   background-color: var(--surface-base);
+  overflow: hidden;
 }
 
 .leftPanel {
@@ -10,8 +11,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: var(--spacing-80);
-  max-width: 600px;
+  padding: var(--spacing-32) var(--spacing-48);
+  max-width: 560px;
+  box-sizing: border-box;
 }
 
 .rightPanel {
@@ -23,9 +25,10 @@
   position: relative;
   overflow: hidden;
   border-left: 1px solid var(--border-subtle);
+  box-sizing: border-box;
 }
 
-/* Add a subtle editorial gradient placeholder to the right panel */
+/* Subtle background gradient */
 .rightPanel::before {
   content: '';
   position: absolute;
@@ -38,33 +41,37 @@
 }
 
 .header {
-  margin-bottom: var(--spacing-48);
+  margin-bottom: var(--spacing-24);
 }
 
 .title {
   color: var(--text-primary);
-  margin-bottom: var(--spacing-16);
+  margin-bottom: var(--spacing-12);
+  font-size: clamp(32px, 3.5vw, 46px);
+  line-height: 1.15;
 }
 
 .subtitle {
   color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 22px;
 }
 
 .card {
   background-color: var(--surface-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xl);
-  padding: var(--spacing-32);
+  padding: var(--spacing-24);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-24);
+  gap: var(--spacing-16);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .inputGroup {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-8);
+  gap: var(--spacing-6);
 }
 
 .label {
@@ -79,6 +86,7 @@
   background-color: var(--input-bg);
   color: var(--input-text);
   transition: border-color 0.2s ease;
+  font-size: 15px;
 }
 
 .input:focus {
@@ -92,7 +100,7 @@
 
 .primaryButton {
   width: 100%;
-  padding: var(--spacing-16);
+  padding: var(--spacing-14);
   background-color: var(--button-primary-bg);
   color: var(--button-primary-text);
   border-radius: var(--radius-md);
@@ -108,7 +116,7 @@
 
 .secondaryButton {
   width: 100%;
-  padding: var(--spacing-16);
+  padding: var(--spacing-14);
   background-color: var(--button-secondary-bg);
   color: var(--button-secondary-text);
   border: 1px solid var(--border-subtle);
@@ -155,6 +163,9 @@
 @media (max-width: 900px) {
   .container {
     flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
   }
   
   .leftPanel {

@@ -31,11 +31,11 @@ export default function Home() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: 'var(--spacing-8)',
-              padding: 'var(--spacing-6) var(--spacing-12)',
+              padding: 'var(--spacing-4) var(--spacing-12)',
               borderRadius: 'var(--radius-3xl)',
               backgroundColor: 'var(--surface-elevated)',
               border: '1px solid var(--border-subtle)',
-              marginBottom: 'var(--spacing-24)',
+              marginBottom: 'var(--spacing-16)',
             }}
           >
             <Sparkles size={14} color="var(--text-secondary)" />
@@ -95,15 +95,15 @@ export default function Home() {
 
       {/* Right Editorial Info Panel */}
       <div className={styles.rightPanel}>
-        <div style={{ maxWidth: '420px', padding: 'var(--spacing-32)' }}>
-          <h2 className="display-section" style={{ color: 'var(--text-primary)', marginBottom: 'var(--spacing-24)' }}>
+        <div style={{ maxWidth: '420px', padding: 'var(--spacing-24)' }}>
+          <h2 className="display-section" style={{ color: 'var(--text-primary)', marginBottom: 'var(--spacing-20)' }}>
             How Dropline Works
           </h2>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-28)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-20)' }}>
             <div style={{ display: 'flex', gap: 'var(--spacing-16)' }}>
-              <div style={{ padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
-                <Zap size={24} color="var(--text-primary)" />
+              <div style={{ padding: '10px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
+                <Zap size={22} color="var(--text-primary)" />
               </div>
               <div>
                 <h3 className="ui-large" style={{ color: 'var(--text-primary)', marginBottom: '4px' }}>100% Peer-to-Peer</h3>
@@ -114,8 +114,8 @@ export default function Home() {
             </div>
 
             <div style={{ display: 'flex', gap: 'var(--spacing-16)' }}>
-              <div style={{ padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
-                <Shield size={24} color="var(--text-primary)" />
+              <div style={{ padding: '10px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
+                <Shield size={22} color="var(--text-primary)" />
               </div>
               <div>
                 <h3 className="ui-large" style={{ color: 'var(--text-primary)', marginBottom: '4px' }}>Zero Storage & Private</h3>
@@ -126,8 +126,8 @@ export default function Home() {
             </div>
 
             <div style={{ display: 'flex', gap: 'var(--spacing-16)' }}>
-              <div style={{ padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
-                <Lock size={24} color="var(--text-primary)" />
+              <div style={{ padding: '10px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
+                <Lock size={22} color="var(--text-primary)" />
               </div>
               <div>
                 <h3 className="ui-large" style={{ color: 'var(--text-primary)', marginBottom: '4px' }}>Cross-Network Connections</h3>
