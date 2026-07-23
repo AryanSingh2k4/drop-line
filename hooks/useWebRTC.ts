@@ -30,6 +30,7 @@ export function useWebRTC(roomCode: string) {
   const peerConnectionRef = useRef<RTCPeerConnection | null>(null);
   const dataChannelRef = useRef<RTCDataChannel | null>(null);
   const myPeerIdRef = useRef<string>('');
+  const iceBufferRef = useRef<RTCIceCandidateInit[]>([]);
   
   // Sequential Queue state
   const fileQueueRef = useRef<{ file: File; id: string }[]>([]);
@@ -246,13 +247,27 @@ export function useWebRTC(roomCode: string) {
     [processNextInQueue]
   );
 
+  // Helper to flush buffered ICE candidates once remote description is ready
+  const flushIceCandidates = async (pc: RTCPeerConnection) => {
+    while (iceBufferRef.current.length > 0) {
+      const candidate = iceBufferRef.current.shift();
+      if (candidate) {
+        try {
+          await pc.addIceCandidate(new RTCIceCandidate(candidate));
+        } catch (e) {
+          console.error('Error adding buffered ICE candidate:', e);
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     if (!roomCode) return;
 
     const pc = new RTCPeerConnection(rtcConfig);
     peerConnectionRef.current = pc;
 
-    // Create DataChannel if initiator
+    // Create DataChannel
     const dc = pc.createDataChannel('fileTransfer', { ordered: true });
     setupDataChannel(dc);
 
@@ -262,7 +277,7 @@ export function useWebRTC(roomCode: string) {
     };
 
     pc.oniceconnectionstatechange = () => {
-      if (pc.iceConnectionState === 'connected') {
+      if (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed') {
         setPeerStatus('connected');
         setIsPeerConnected(true);
       } else if (
@@ -306,7 +321,6 @@ export function useWebRTC(roomCode: string) {
       const presentPeers = Object.keys(state);
 
       if (presentPeers.length > 2 && !presentPeers.slice(0, 2).includes(myPeerIdRef.current)) {
-        // Room already has 2 devices
         setPeerStatus('room_full');
         setRoomError('This room already has two devices.');
         setIsPeerConnected(false);
@@ -319,11 +333,37 @@ export function useWebRTC(roomCode: string) {
       if (!payload || payload.senderId === myPeerIdRef.current) return;
 
       try {
-        if (payload.type === 'peer-joined') {
-          const remotePeerId = payload.senderId;
+        const remotePeerId = payload.senderId;
 
-          // Requirement 1: Only the device with the LOWER ID starts the connection!
+        if (payload.type === 'peer-joined') {
+          // Send announcement back so both peers learn each other's IDs immediately
+          channel.send({
+            type: 'broadcast',
+            event: 'signal',
+            payload: {
+              type: 'peer-announce',
+              senderId: myPeerIdRef.current,
+            },
+          });
+
+          // Check lower ID rule
           if (myPeerIdRef.current < remotePeerId) {
+            const offer = await pc.createOffer();
+            await pc.setLocalDescription(offer);
+
+            channel.send({
+              type: 'broadcast',
+              event: 'signal',
+              payload: {
+                type: 'offer',
+                sdp: offer,
+                senderId: myPeerIdRef.current,
+              },
+            });
+          }
+        } else if (payload.type === 'peer-announce') {
+          // Peer B receives announcement from Peer A
+          if (myPeerIdRef.current < remotePeerId && !pc.localDescription) {
             const offer = await pc.createOffer();
             await pc.setLocalDescription(offer);
 
@@ -339,6 +379,8 @@ export function useWebRTC(roomCode: string) {
           }
         } else if (payload.type === 'offer') {
           await pc.setRemoteDescription(new RTCSessionDescription(payload.sdp));
+          await flushIceCandidates(pc);
+
           const answer = await pc.createAnswer();
           await pc.setLocalDescription(answer);
 
@@ -353,8 +395,14 @@ export function useWebRTC(roomCode: string) {
           });
         } else if (payload.type === 'answer') {
           await pc.setRemoteDescription(new RTCSessionDescription(payload.sdp));
+          await flushIceCandidates(pc);
         } else if (payload.type === 'ice' && payload.candidate) {
-          await pc.addIceCandidate(new RTCIceCandidate(payload.candidate));
+          if (pc.remoteDescription && pc.remoteDescription.type) {
+            await pc.addIceCandidate(new RTCIceCandidate(payload.candidate));
+          } else {
+            // Buffer candidate until remote description is set
+            iceBufferRef.current.push(payload.candidate);
+          }
         }
       } catch (err) {
         console.error('Signaling error:', err);
@@ -365,7 +413,7 @@ export function useWebRTC(roomCode: string) {
       if (status === 'SUBSCRIBED') {
         await channel.track({ online_at: new Date().toISOString() });
 
-        // Announce presence
+        // Announce presence to room
         channel.send({
           type: 'broadcast',
           event: 'signal',
@@ -390,7 +438,6 @@ export function useWebRTC(roomCode: string) {
       const validFilesToQueue: { file: File; id: string }[] = [];
 
       for (const file of selectedFiles) {
-        // Requirement 2: 100 MB File Limit check
         if (file.size > MAX_FILE_SIZE) {
           alert(`File "${file.name}" exceeds the 100 MB limit. Files must be 100 MB or smaller.`);
           continue;
@@ -411,7 +458,6 @@ export function useWebRTC(roomCode: string) {
         validFilesToQueue.push({ file, id: fileId });
       }
 
-      // Requirement 7: Push to sequential queue
       fileQueueRef.current.push(...validFilesToQueue);
       processNextInQueue();
     },
