@@ -25,6 +25,10 @@ export default function RoomPage() {
 
   const handleFilesSelected = (selectedFiles: File[]) => {
     selectedFiles.forEach((file) => {
+      if (file.size > 100 * 1024 * 1024) {
+        alert(`File "${file.name}" is too large. Files must be 100 MB or smaller.`);
+        return;
+      }
       sendFile(file);
     });
   };

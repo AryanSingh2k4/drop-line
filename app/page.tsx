@@ -9,15 +9,27 @@ export default function Home() {
   const router = useRouter();
   const [roomCode, setRoomCode] = useState('');
 
-  const handleCreateRoom = () => {
-    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
-    router.push(`/room/${code}`);
+  const handleCreateRoom = async () => {
+    try {
+      const res = await fetch('/api/room/create', { method: 'POST' });
+      if (!res.ok) {
+        alert('Rate limit exceeded. Try again in a minute.');
+        return;
+      }
+      const data = await res.json();
+      router.push(`/room/${data.code}`);
+    } catch (e) {
+      alert('Error creating room');
+    }
   };
 
   const handleJoinRoom = (e: React.FormEvent) => {
     e.preventDefault();
-    if (roomCode.trim().length > 0) {
-      router.push(`/room/${roomCode.trim().toUpperCase()}`);
+    const formattedCode = roomCode.trim().toUpperCase();
+    if (/^[A-Z0-9]{6}$/.test(formattedCode)) {
+      router.push(`/room/${formattedCode}`);
+    } else {
+      alert('Room code must be exactly 6 letters or numbers.');
     }
   };
 
