@@ -6,7 +6,7 @@ import { useWebRTC } from '@/hooks/useWebRTC';
 import { PeerStatus } from '@/components/PeerStatus';
 import { FileDropZone } from '@/components/FileDropZone';
 import { FileCard } from '@/components/FileCard';
-import { Copy, Check, ArrowLeft, ShieldCheck, Zap } from 'lucide-react';
+import { Copy, Check, ArrowLeft, ShieldCheck, Zap, AlertTriangle } from 'lucide-react';
 
 export default function RoomPage() {
   const params = useParams();
@@ -14,7 +14,10 @@ export default function RoomPage() {
   const roomCode = (params.code as string)?.toUpperCase() || '';
   const [copied, setCopied] = useState(false);
 
-  const { peerStatus, isPeerConnected, files, sendFile } = useWebRTC(roomCode);
+  // Validate room code format: /^[A-Z0-9]{6}$/
+  const isValidCode = /^[A-Z0-9]{6}$/.test(roomCode);
+
+  const { peerStatus, isPeerConnected, files, roomError, sendFile } = useWebRTC(isValidCode ? roomCode : '');
 
   const handleCopyLink = () => {
     const url = window.location.href;
@@ -24,10 +27,45 @@ export default function RoomPage() {
   };
 
   const handleFilesSelected = (selectedFiles: File[]) => {
-    selectedFiles.forEach((file) => {
-      sendFile(file);
-    });
+    sendFile(selectedFiles);
   };
+
+  if (!isValidCode) {
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '24px',
+          textAlign: 'center',
+          backgroundColor: 'var(--bg-primary)',
+        }}
+      >
+        <AlertTriangle size={48} color="#ef4444" style={{ marginBottom: '16px' }} />
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', color: 'var(--text-main)', marginBottom: '8px' }}>
+          Invalid Room Code
+        </h1>
+        <p style={{ color: 'var(--text-muted)', fontSize: '15px', marginBottom: '24px', maxWidth: '400px' }}>
+          Room codes must be exactly 6 uppercase letters or numbers (e.g. A3X9K2).
+        </p>
+        <button
+          onClick={() => router.push('/')}
+          style={{
+            padding: '12px 24px',
+            backgroundColor: 'var(--btn-primary-bg)',
+            color: 'var(--btn-primary-text)',
+            borderRadius: '12px',
+            fontWeight: 500,
+          }}
+        >
+          Return Home
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -75,6 +113,28 @@ export default function RoomPage() {
 
           <PeerStatus status={peerStatus} />
         </div>
+
+        {/* 2-Device Room Cap Error Notice */}
+        {roomError && (
+          <div
+            style={{
+              marginBottom: '24px',
+              padding: '16px 20px',
+              borderRadius: '16px',
+              backgroundColor: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.3)',
+              color: '#ef4444',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              fontSize: '15px',
+              fontWeight: 500,
+            }}
+          >
+            <AlertTriangle size={20} />
+            <span>{roomError}</span>
+          </div>
+        )}
 
         {/* Room Code Main Card */}
         <div
@@ -163,18 +223,18 @@ export default function RoomPage() {
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', fontSize: '13px' }}>
             <ShieldCheck size={16} color="var(--text-main)" />
-            <span>End-to-End Peer-to-Peer</span>
+            <span>Strict 2-Device Limit</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', fontSize: '13px' }}>
             <Zap size={16} color="var(--text-main)" />
-            <span>Zero Storage / Direct Speed</span>
+            <span>Max 100 MB / File</span>
           </div>
         </div>
 
         {/* File Dropzone */}
         <FileDropZone
           onFilesSelected={handleFilesSelected}
-          disabled={!isPeerConnected}
+          disabled={!isPeerConnected || peerStatus === 'room_full'}
         />
 
         {/* Files List Section */}

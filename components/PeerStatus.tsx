@@ -3,7 +3,7 @@
 import React from 'react';
 
 interface PeerStatusProps {
-  status: 'connecting' | 'connected' | 'disconnected' | 'failed';
+  status: 'connecting' | 'connected' | 'disconnected' | 'failed' | 'room_full';
 }
 
 export const PeerStatus: React.FC<PeerStatusProps> = ({ status }) => {
@@ -17,6 +17,8 @@ export const PeerStatus: React.FC<PeerStatusProps> = ({ status }) => {
         return { label: 'Peer Disconnected', color: '#6b7280', pulse: false };
       case 'failed':
         return { label: 'Connection Failed', color: '#ef4444', pulse: false };
+      case 'room_full':
+        return { label: 'Room Full (Max 2)', color: '#ef4444', pulse: false };
     }
   };
 
