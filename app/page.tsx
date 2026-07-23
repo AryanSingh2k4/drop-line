@@ -22,123 +22,97 @@ export default function Home() {
   };
 
   return (
-    <main className={styles.container}>
-      {/* Left Action Panel */}
-      <div className={styles.leftPanel}>
-        <div className={styles.header}>
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 'var(--spacing-8)',
-              padding: 'var(--spacing-4) var(--spacing-12)',
-              borderRadius: 'var(--radius-3xl)',
-              backgroundColor: 'var(--surface-elevated)',
-              border: '1px solid var(--border-subtle)',
-              marginBottom: 'var(--spacing-16)',
-            }}
-          >
-            <Sparkles size={14} color="var(--text-secondary)" />
-            <span className="ui-small" style={{ color: 'var(--text-secondary)' }}>
-              Dropline P2P Protocol v1.0
-            </span>
-          </div>
-
-          <h1 className={`${styles.title} display-hero`}>
-            Share files directly device to device.
-          </h1>
-          <p className={`${styles.subtitle} ui-body`}>
-            No cloud uploads. No size limits. Completely free and secure WebRTC transfer.
-          </p>
+    <div className={styles.pageWrapper}>
+      {/* Hero Header */}
+      <section className={styles.heroSection}>
+        <div className={styles.badge}>
+          <Sparkles size={14} />
+          <span>Dropline P2P Protocol</span>
         </div>
 
+        <h1 className={styles.title}>
+          Share files directly<br />device to device.
+        </h1>
+        <p className={styles.subtitle}>
+          No cloud uploads. No size limits. Completely free and private peer-to-peer WebRTC file transfer.
+        </p>
+      </section>
+
+      {/* Main Action Cards */}
+      <section className={styles.cardsGrid}>
+        {/* Create Room Card */}
         <div className={styles.card}>
-          <button 
-            className={`${styles.primaryButton} ui-large`}
-            onClick={handleCreateRoom}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 'var(--spacing-8)',
-            }}
-          >
-            Create New Room <ArrowRight size={18} />
+          <div className={styles.cardHeader}>
+            <h2 className={styles.cardTitle}>Start a New Room</h2>
+            <p className={styles.cardDesc}>
+              Generate a unique room code and share files instantly with any device nearby or remote.
+            </p>
+          </div>
+          <button className={styles.primaryButton} onClick={handleCreateRoom}>
+            Create Room <ArrowRight size={18} />
           </button>
+        </div>
 
-          <div className={`${styles.divider} ui-small`}>or enter a room code</div>
-
-          <form className={styles.inputGroup} onSubmit={handleJoinRoom}>
-            <label htmlFor="code" className={`${styles.label} ui-medium`}>
-              Room Code
-            </label>
+        {/* Join Room Card */}
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <h2 className={styles.cardTitle}>Join a Room</h2>
+            <p className={styles.cardDesc}>
+              Have a 6-digit code? Enter it below to establish a direct P2P connection.
+            </p>
+          </div>
+          <form onSubmit={handleJoinRoom} className={styles.formGroup}>
             <input
-              id="code"
               type="text"
-              placeholder="e.g. A3X9K2"
-              className={`${styles.input} ui-body`}
+              placeholder="Enter 6-digit code (e.g. A3X9K2)"
+              className={styles.input}
               value={roomCode}
               onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
               maxLength={6}
             />
-            <button 
+            <button
               type="submit"
-              className={`${styles.secondaryButton} ui-large`}
-              style={{ marginTop: 'var(--spacing-8)' }}
+              className={styles.secondaryButton}
               disabled={!roomCode.trim()}
             >
-              Join Room
+              Connect to Room
             </button>
           </form>
         </div>
-      </div>
+      </section>
 
-      {/* Right Editorial Info Panel */}
-      <div className={styles.rightPanel}>
-        <div style={{ maxWidth: '420px', padding: 'var(--spacing-24)' }}>
-          <h2 className="display-section" style={{ color: 'var(--text-primary)', marginBottom: 'var(--spacing-20)' }}>
-            How Dropline Works
-          </h2>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-20)' }}>
-            <div style={{ display: 'flex', gap: 'var(--spacing-16)' }}>
-              <div style={{ padding: '10px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
-                <Zap size={22} color="var(--text-primary)" />
-              </div>
-              <div>
-                <h3 className="ui-large" style={{ color: 'var(--text-primary)', marginBottom: '4px' }}>100% Peer-to-Peer</h3>
-                <p className="ui-body" style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '20px' }}>
-                  Files flow straight between your devices through WebRTC DataChannels. They never touch our servers.
-                </p>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', gap: 'var(--spacing-16)' }}>
-              <div style={{ padding: '10px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
-                <Shield size={22} color="var(--text-primary)" />
-              </div>
-              <div>
-                <h3 className="ui-large" style={{ color: 'var(--text-primary)', marginBottom: '4px' }}>Zero Storage & Private</h3>
-                <p className="ui-body" style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '20px' }}>
-                  No file logs or persistent database records. Once you close the tab, the room vanishes.
-                </p>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', gap: 'var(--spacing-16)' }}>
-              <div style={{ padding: '10px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-subtle)', height: 'fit-content' }}>
-                <Lock size={22} color="var(--text-primary)" />
-              </div>
-              <div>
-                <h3 className="ui-large" style={{ color: 'var(--text-primary)', marginBottom: '4px' }}>Cross-Network Connections</h3>
-                <p className="ui-body" style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '20px' }}>
-                  Connect devices on different Wi-Fi networks or cellular data using automatic STUN/TURN NAT traversal.
-                </p>
-              </div>
-            </div>
+      {/* Value Proposition Features */}
+      <section className={styles.featuresGrid}>
+        <div className={styles.featureItem}>
+          <div className={styles.featureIcon}>
+            <Zap size={20} />
           </div>
+          <h3 className={styles.featureTitle}>100% Peer-to-Peer</h3>
+          <p className={styles.featureDesc}>
+            Data transfers directly between browsers over encrypted WebRTC channels without touching any cloud storage.
+          </p>
         </div>
-      </div>
-    </main>
+
+        <div className={styles.featureItem}>
+          <div className={styles.featureIcon}>
+            <Shield size={20} />
+          </div>
+          <h3 className={styles.featureTitle}>Zero Logs & Storage</h3>
+          <p className={styles.featureDesc}>
+            Your files never leave your device memory. Once the room session ends, all connection metadata vanishes.
+          </p>
+        </div>
+
+        <div className={styles.featureItem}>
+          <div className={styles.featureIcon}>
+            <Lock size={20} />
+          </div>
+          <h3 className={styles.featureTitle}>Cross-Network</h3>
+          <p className={styles.featureDesc}>
+            Seamlessly connect devices across different Wi-Fi networks, mobile data, or strict firewalls with STUN/TURN traversal.
+          </p>
+        </div>
+      </section>
+    </div>
   );
 }
