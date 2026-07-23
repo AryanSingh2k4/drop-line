@@ -228,6 +228,8 @@ export function useWebRTC(roomCode: string) {
   useEffect(() => {
     if (!roomCode) return;
 
+    let cleanedUp = false;
+
     log('Joining room:', roomCode);
     hasCreatedOfferRef.current = false;
     iceBufferRef.current = [];
@@ -246,6 +248,7 @@ export function useWebRTC(roomCode: string) {
     };
 
     pc.oniceconnectionstatechange = () => {
+      if (cleanedUp) return;
       log('ICE connection state:', pc.iceConnectionState);
       if (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed') {
         setPeerStatus('connected');
@@ -265,125 +268,142 @@ export function useWebRTC(roomCode: string) {
 
     // Supabase Realtime channel
     const channelName = `room:${roomCode.toUpperCase()}`;
-    log('Subscribing to Supabase channel:', channelName);
+    let channel: ReturnType<typeof supabase.channel> | null = null;
 
-    const channel = supabase.channel(channelName, {
-      config: {
-        broadcast: { self: false },
-        presence: { key: myPeerIdRef.current },
-      },
-    });
-
-    // Send ICE candidates as they arrive
-    pc.onicecandidate = (event) => {
-      if (event.candidate) {
-        log('Sending ICE candidate');
-        channel.send({
-          type: 'broadcast',
-          event: 'signal',
-          payload: {
-            type: 'ice',
-            candidate: event.candidate.toJSON(),
-            senderId: myPeerIdRef.current,
-          },
-        });
+    const setupRealtime = async () => {
+      log('Attempting anonymous sign-in...');
+      const { data, error } = await supabase.auth.signInAnonymously();
+      if (error) {
+        console.error('Anonymous sign in error:', error);
       } else {
-        log('All ICE candidates gathered');
+        log('Signed in anonymously:', data?.user?.id);
       }
-    };
 
-    // Presence for 2-device limit
-    channel.on('presence', { event: 'sync' }, () => {
-      const state = channel.presenceState();
-      const peers = Object.keys(state);
-      log('Presence sync — peers in room:', peers.length, peers);
+      log('Subscribing to Supabase channel:', channelName);
+      channel = supabase.channel(channelName, {
+        config: {
+          broadcast: { self: false },
+          presence: { key: myPeerIdRef.current },
+        },
+      });
 
-      if (peers.length > 2 && !peers.slice(0, 2).includes(myPeerIdRef.current)) {
-        setPeerStatus('room_full');
-        setRoomError('This room already has two devices.');
-        setIsPeerConnected(false);
-        pc.close();
-      }
-    });
-
-    // When a new peer joins via presence
-    channel.on('presence', { event: 'join' }, ({ key }) => {
-      if (key === myPeerIdRef.current) return;
-      log('Presence JOIN from:', key);
-      remotePeerIdRef.current = key;
-
-      // Lower ID initiates
-      if (myPeerIdRef.current < key) {
-        log('I have lower ID, initiating offer');
-        initiateOffer(pc, channel);
-      } else {
-        log('I have higher ID, waiting for offer from:', key);
-      }
-    });
-
-    // Handle broadcast signaling messages
-    channel.on('broadcast', { event: 'signal' }, async ({ payload }) => {
-      if (!payload || payload.senderId === myPeerIdRef.current) return;
-
-      log('Received signal:', payload.type, 'from:', payload.senderId);
-
-      try {
-        if (payload.type === 'offer') {
-          remotePeerIdRef.current = payload.senderId;
-          log('Received Offer, setting remote description');
-          await pc.setRemoteDescription(new RTCSessionDescription(payload.sdp));
-          await flushIceCandidates(pc);
-
-          log('Creating Answer');
-          const answer = await pc.createAnswer();
-          await pc.setLocalDescription(answer);
-
-          log('Sending Answer');
-          channel.send({
+      // Send ICE candidates as they arrive
+      pc.onicecandidate = (event) => {
+        if (event.candidate) {
+          log('Sending ICE candidate');
+          channel?.send({
             type: 'broadcast',
             event: 'signal',
-            payload: { type: 'answer', sdp: answer, senderId: myPeerIdRef.current },
+            payload: {
+              type: 'ice',
+              candidate: event.candidate.toJSON(),
+              senderId: myPeerIdRef.current,
+            },
           });
-        } else if (payload.type === 'answer') {
-          log('Received Answer, setting remote description');
-          await pc.setRemoteDescription(new RTCSessionDescription(payload.sdp));
-          await flushIceCandidates(pc);
-        } else if (payload.type === 'ice' && payload.candidate) {
-          if (pc.remoteDescription && pc.remoteDescription.type) {
-            log('Adding ICE candidate directly');
-            await pc.addIceCandidate(new RTCIceCandidate(payload.candidate));
-          } else {
-            log('Buffering ICE candidate (no remote description yet)');
-            iceBufferRef.current.push(payload.candidate);
-          }
+        } else {
+          log('All ICE candidates gathered');
         }
-      } catch (err) {
-        console.error('Signaling error:', err);
-      }
-    });
+      };
 
-    channel.subscribe(async (status) => {
-      log('Supabase channel status:', status);
+      // Presence for 2-device limit
+      channel.on('presence', { event: 'sync' }, () => {
+        if (!channel) return;
+        const state = channel.presenceState();
+        const peers = Object.keys(state);
+        log('Presence sync — peers in room:', peers.length, peers);
 
-      if (status === 'SUBSCRIBED') {
-        log('Channel SUBSCRIBED — tracking presence');
-        await channel.track({ online_at: new Date().toISOString() });
-      } else if (status === 'CHANNEL_ERROR') {
-        console.error('Supabase channel error — check your API key and URL');
-        setPeerStatus('failed');
-        setRoomError('Could not connect to signaling server. Check your Supabase credentials.');
-      } else if (status === 'TIMED_OUT') {
-        console.error('Supabase channel timed out');
-        setPeerStatus('failed');
-        setRoomError('Signaling server connection timed out.');
-      }
-    });
+        if (peers.length > 2 && !peers.slice(0, 2).includes(myPeerIdRef.current)) {
+          setPeerStatus('room_full');
+          setRoomError('This room already has two devices.');
+          setIsPeerConnected(false);
+          pc.close();
+        }
+      });
+
+      // When a new peer joins via presence
+      channel.on('presence', { event: 'join' }, ({ key }) => {
+        if (key === myPeerIdRef.current) return;
+        log('Presence JOIN from:', key);
+        remotePeerIdRef.current = key;
+
+        // Lower ID initiates
+        if (myPeerIdRef.current < key && channel) {
+          log('I have lower ID, initiating offer');
+          initiateOffer(pc, channel);
+        } else {
+          log('I have higher ID, waiting for offer from:', key);
+        }
+      });
+
+      // Handle broadcast signaling messages
+      channel.on('broadcast', { event: 'signal' }, async ({ payload }) => {
+        if (!payload || payload.senderId === myPeerIdRef.current) return;
+
+        log('Received signal:', payload.type, 'from:', payload.senderId);
+
+        try {
+          if (payload.type === 'offer') {
+            remotePeerIdRef.current = payload.senderId;
+            log('Received Offer, setting remote description');
+            await pc.setRemoteDescription(new RTCSessionDescription(payload.sdp));
+            await flushIceCandidates(pc);
+
+            log('Creating Answer');
+            const answer = await pc.createAnswer();
+            await pc.setLocalDescription(answer);
+
+            log('Sending Answer');
+            channel?.send({
+              type: 'broadcast',
+              event: 'signal',
+              payload: { type: 'answer', sdp: answer, senderId: myPeerIdRef.current },
+            });
+          } else if (payload.type === 'answer') {
+            log('Received Answer, setting remote description');
+            await pc.setRemoteDescription(new RTCSessionDescription(payload.sdp));
+            await flushIceCandidates(pc);
+          } else if (payload.type === 'ice' && payload.candidate) {
+            if (pc.remoteDescription && pc.remoteDescription.type) {
+              log('Adding ICE candidate directly');
+              await pc.addIceCandidate(new RTCIceCandidate(payload.candidate));
+            } else {
+              log('Buffering ICE candidate (no remote description yet)');
+              iceBufferRef.current.push(payload.candidate);
+            }
+          }
+        } catch (err) {
+          console.error('Signaling error:', err);
+        }
+      });
+
+      channel.subscribe(async (status) => {
+        log('Supabase channel status:', status);
+
+        if (status === 'SUBSCRIBED') {
+          log('Channel SUBSCRIBED — tracking presence');
+          await channel?.track({ online_at: new Date().toISOString() });
+        } else if (status === 'CHANNEL_ERROR') {
+          console.error('Supabase channel error — check your API key and URL');
+          setPeerStatus('failed');
+          setRoomError('Could not connect to signaling server. Check your Supabase credentials.');
+        } else if (status === 'TIMED_OUT') {
+          console.error('Supabase channel timed out');
+          setPeerStatus('failed');
+          setRoomError('Signaling server connection timed out.');
+        }
+      });
+    };
+
+    setupRealtime();
 
     return () => {
       log('Cleaning up room:', roomCode);
+      cleanedUp = true;
       dc.close();
       pc.close();
-      supabase.removeChannel(channel);
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
     };
   }, [roomCode, setupDataChannel, initiateOffer]);
 
