@@ -160,6 +160,7 @@ export function useWebRTC(roomCode: string) {
       } else if (pc.iceConnectionState === 'failed') {
         setPeerStatus('failed');
         setIsPeerConnected(false);
+        remotePeerIdRef.current = null;
       }
     };
 
@@ -185,8 +186,9 @@ export function useWebRTC(roomCode: string) {
       .on('broadcast', { event: 'signal' }, async ({ payload }) => {
         if (!payload || payload.senderId === myPeerIdRef.current) return;
         
-        // Room cap limit: Reject third peer
-        if (remotePeerIdRef.current && remotePeerIdRef.current !== payload.senderId) {
+        // Room cap limit: Reject third peer ONLY if we are already connected to someone else
+        const isConnected = pc.iceConnectionState === 'connected';
+        if (isConnected && remotePeerIdRef.current && remotePeerIdRef.current !== payload.senderId) {
           if (payload.type === 'peer-joined') {
             console.log('A third device tried to join, but this room is full.');
           }
@@ -194,7 +196,30 @@ export function useWebRTC(roomCode: string) {
         }
 
         try {
-          if (payload.type === 'offer') {
+          if (payload.type === 'peer-joined' || payload.type === 'peer-announce') {
+            remotePeerIdRef.current = payload.senderId;
+
+            // Reply with peer-announce if we received peer-joined so both sides know each other's ID
+            if (payload.type === 'peer-joined') {
+              channel.send({
+                type: 'broadcast',
+                event: 'signal',
+                payload: { type: 'peer-announce', senderId: myPeerIdRef.current },
+              });
+            }
+
+            // Perfect Negotiation (Polite Peer): Lower ID initiates the offer
+            if (myPeerIdRef.current < payload.senderId) {
+              const offer = await pc.createOffer();
+              await pc.setLocalDescription(offer);
+
+              channel.send({
+                type: 'broadcast',
+                event: 'signal',
+                payload: { type: 'offer', sdp: offer, senderId: myPeerIdRef.current },
+              });
+            }
+          } else if (payload.type === 'offer') {
             remotePeerIdRef.current = payload.senderId;
             await pc.setRemoteDescription(new RTCSessionDescription(payload.sdp));
             
@@ -225,21 +250,6 @@ export function useWebRTC(roomCode: string) {
             } else {
               iceCandidateBuffer.current.push(payload.candidate);
             }
-          } else if (payload.type === 'peer-joined') {
-            // Polite/Impolite peer negotiation
-            // The one with the LOWER ID starts the offer
-            remotePeerIdRef.current = payload.senderId;
-            if (myPeerIdRef.current < payload.senderId) {
-              const offer = await pc.createOffer();
-              await pc.setLocalDescription(offer);
-
-              channel.send({
-                type: 'broadcast',
-                event: 'signal',
-                payload: { type: 'offer', sdp: offer, senderId: myPeerIdRef.current },
-              });
-            }
-            // else: wait for the other side to send offer
           }
         } catch (err) {
           console.error('Signaling error:', err);
@@ -247,6 +257,7 @@ export function useWebRTC(roomCode: string) {
       })
       .subscribe(async (status) => {
         if (status === 'SUBSCRIBED') {
+          // Announce presence to room
           channel.send({
             type: 'broadcast',
             event: 'signal',
