@@ -21,6 +21,17 @@
   --input-border: rgba(255, 255, 255, 0.12);
   --input-focus: #e2e1da;
 
+  /* Aliases for legacy component compatibility */
+  --surface-base: var(--bg-primary);
+  --surface-elevated: var(--bg-secondary);
+  --surface-card: var(--card-bg);
+  --surface-white: var(--card-bg);
+  --text-primary: var(--text-main);
+  --text-secondary: var(--text-muted);
+  --text-tertiary: var(--text-dim);
+  --border-subtle: var(--card-border);
+  --action-fill: var(--btn-primary-bg);
+
   /* Typography */
   --font-serif: 'Anthropic Serif', Georgia, serif;
   --font-sans: 'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -48,6 +59,16 @@
     --input-bg: #ffffff;
     --input-border: rgba(0, 0, 0, 0.12);
     --input-focus: #121212;
+
+    --surface-base: var(--bg-primary);
+    --surface-elevated: var(--bg-secondary);
+    --surface-card: var(--card-bg);
+    --surface-white: #ffffff;
+    --text-primary: var(--text-main);
+    --text-secondary: var(--text-muted);
+    --text-tertiary: var(--text-dim);
+    --border-subtle: var(--card-border);
+    --action-fill: var(--btn-primary-bg);
   }
 }
 

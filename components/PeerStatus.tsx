@@ -27,12 +27,13 @@ export const PeerStatus: React.FC<PeerStatusProps> = ({ status }) => {
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: 'var(--spacing-8)',
-        padding: 'var(--spacing-6) var(--spacing-16)',
-        backgroundColor: 'var(--surface-card)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 'var(--radius-3xl)',
-        boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+        gap: '8px',
+        padding: '8px 16px',
+        backgroundColor: 'var(--card-bg)',
+        border: '1px solid var(--card-border)',
+        borderRadius: '999px',
+        backdropFilter: 'blur(12px)',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
       }}
     >
       <span
@@ -46,7 +47,7 @@ export const PeerStatus: React.FC<PeerStatusProps> = ({ status }) => {
           animation: pulse ? 'pulse 1.5s infinite' : 'none',
         }}
       />
-      <span className="ui-medium" style={{ color: 'var(--text-primary)' }}>
+      <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-main)' }}>
         {label}
       </span>
       <style jsx>{`

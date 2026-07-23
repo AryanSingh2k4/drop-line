@@ -20,24 +20,26 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
   return (
     <div
       style={{
-        backgroundColor: 'var(--surface-card)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 'var(--radius-lg)',
-        padding: 'var(--spacing-16)',
+        backgroundColor: 'var(--card-bg)',
+        border: '1px solid var(--card-border)',
+        borderRadius: '16px',
+        padding: '16px 20px',
         display: 'flex',
         alignItems: 'center',
-        gap: 'var(--spacing-16)',
-        marginBottom: 'var(--spacing-12)',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+        gap: '16px',
+        marginBottom: '12px',
+        backdropFilter: 'blur(12px)',
+        boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
       }}
     >
       {/* Thumbnail or Icon */}
       <div
         style={{
-          width: '48px',
-          height: '48px',
-          borderRadius: 'var(--radius-sm)',
-          backgroundColor: 'var(--surface-elevated)',
+          width: '44px',
+          height: '44px',
+          borderRadius: '10px',
+          backgroundColor: 'rgba(255, 255, 255, 0.05)',
+          border: '1px solid var(--card-border)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -53,9 +55,9 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         ) : isImage ? (
-          <ImageIcon size={24} color="var(--text-secondary)" />
+          <ImageIcon size={22} color="var(--text-muted)" />
         ) : (
-          <FileText size={24} color="var(--text-secondary)" />
+          <FileText size={22} color="var(--text-muted)" />
         )}
       </div>
 
@@ -66,13 +68,14 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: 'var(--spacing-4)',
+            marginBottom: '6px',
           }}
         >
           <span
-            className="ui-medium"
             style={{
-              color: 'var(--text-primary)',
+              color: 'var(--text-main)',
+              fontSize: '14px',
+              fontWeight: 500,
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -82,15 +85,14 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
             {file.name}
           </span>
           <span
-            className="ui-small"
             style={{
               padding: '2px 8px',
-              borderRadius: 'var(--radius-xs)',
-              backgroundColor:
-                file.direction === 'sent'
-                  ? 'var(--surface-elevated)'
-                  : 'var(--border-subtle)',
-              color: 'var(--text-secondary)',
+              borderRadius: '6px',
+              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid var(--card-border)',
+              color: 'var(--text-muted)',
+              fontSize: '11px',
+              fontWeight: 500,
             }}
           >
             {file.direction === 'sent' ? 'Sent' : 'Received'}
@@ -98,13 +100,13 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
         </div>
 
         {/* Progress Bar & Meta */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-12)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div
             style={{
               flex: 1,
-              height: '6px',
-              backgroundColor: 'var(--border-subtle)',
-              borderRadius: 'var(--radius-xs)',
+              height: '5px',
+              backgroundColor: 'rgba(255, 255, 255, 0.08)',
+              borderRadius: '4px',
               overflow: 'hidden',
             }}
           >
@@ -117,19 +119,19 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
                     ? '#ef4444'
                     : file.status === 'completed'
                     ? '#10b981'
-                    : 'var(--text-primary)',
+                    : 'var(--text-main)',
                 transition: 'width 0.2s ease',
               }}
             />
           </div>
 
-          <span className="ui-xsmall" style={{ color: 'var(--text-tertiary)', minWidth: '60px', textAlign: 'right' }}>
+          <span style={{ color: 'var(--text-dim)', fontSize: '12px', minWidth: '55px', textAlign: 'right' }}>
             {file.status === 'transferring' ? `${file.progress}%` : formatSize(file.size)}
           </span>
         </div>
 
         {file.status === 'transferring' && file.speed && (
-          <div className="ui-xsmall" style={{ color: 'var(--text-tertiary)', marginTop: '4px' }}>
+          <div style={{ color: 'var(--text-dim)', fontSize: '11px', marginTop: '4px' }}>
             Speed: {file.speed}
           </div>
         )}
@@ -141,29 +143,30 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
           <a
             href={file.url}
             download={file.name}
-            className="ui-medium"
             style={{
-              padding: 'var(--spacing-8) var(--spacing-12)',
-              backgroundColor: 'var(--button-primary-bg)',
-              color: 'var(--button-primary-text)',
-              borderRadius: 'var(--radius-sm)',
+              padding: '8px 14px',
+              backgroundColor: 'var(--btn-primary-bg)',
+              color: 'var(--btn-primary-text)',
+              borderRadius: '8px',
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
+              gap: '6px',
               textDecoration: 'none',
+              fontSize: '13px',
+              fontWeight: 500,
             }}
           >
-            <Download size={16} /> Save
+            <Download size={14} /> Save
           </a>
         )}
         {file.status === 'completed' && !file.url && (
-          <CheckCircle2 size={24} color="#10b981" />
+          <CheckCircle2 size={22} color="#10b981" />
         )}
         {file.status === 'transferring' && (
-          <Loader2 size={24} className="spin" color="var(--text-secondary)" />
+          <Loader2 size={22} className="spin" color="var(--text-muted)" />
         )}
         {file.status === 'error' && (
-          <AlertCircle size={24} color="#ef4444" />
+          <AlertCircle size={22} color="#ef4444" />
         )}
       </div>
 
