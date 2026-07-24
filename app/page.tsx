@@ -39,8 +39,8 @@ export default function Home() {
         {/* Hero Header */}
         <section className={styles.heroSection}>
           <div className={styles.badge}>
-            <Sparkles size={13} />
-            <span>Dropline P2P Protocol</span>
+            <img src="/logo.webp" alt="Dropline Logo" width={16} height={16} style={{ borderRadius: '3px', objectFit: 'contain' }} />
+            <span>Dropline P2P File Sharing</span>
           </div>
 
           <h1 className={styles.title}>
