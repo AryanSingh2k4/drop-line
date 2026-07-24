@@ -40,11 +40,9 @@ export const TextShareZone: React.FC<TextShareZoneProps> = ({
       <div
         style={{
           backgroundColor: 'var(--card-bg)',
-          border: '1px solid var(--card-border)',
-          borderRadius: '20px',
+          border: '1px solid var(--border)',
+          borderRadius: 'var(--radius-xl)',
           padding: '24px',
-          backdropFilter: 'blur(16px)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
         }}
       >
         <div
@@ -60,28 +58,28 @@ export const TextShareZone: React.FC<TextShareZoneProps> = ({
               style={{
                 width: '32px',
                 height: '32px',
-                borderRadius: '8px',
-                backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                borderRadius: 'var(--radius-sm)',
+                backgroundColor: 'var(--bg-secondary)',
+                border: '1px solid var(--border)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'var(--text-main)',
               }}
             >
-              <Code size={18} />
+              <Code size={16} />
             </div>
-            <div>
-              <h3
-                style={{
-                  color: 'var(--text-main)',
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  margin: 0,
-                }}
-              >
-                Share Code & Text Snippets
-              </h3>
-            </div>
+            <h3
+              style={{
+                color: 'var(--text-main)',
+                fontSize: '16px',
+                fontFamily: 'var(--font-sans)',
+                fontWeight: 500,
+                margin: 0,
+              }}
+            >
+              Share Code & Text Snippets
+            </h3>
           </div>
 
           {inputText.length > 0 && (
@@ -89,7 +87,7 @@ export const TextShareZone: React.FC<TextShareZoneProps> = ({
               style={{
                 color: 'var(--text-dim)',
                 fontSize: '12px',
-                fontFamily: 'monospace',
+                fontFamily: 'var(--font-mono)',
               }}
             >
               {lineCount} {lineCount === 1 ? 'line' : 'lines'} • {charCount} chars
@@ -110,13 +108,13 @@ export const TextShareZone: React.FC<TextShareZoneProps> = ({
             rows={5}
             style={{
               width: '100%',
-              backgroundColor: 'rgba(0, 0, 0, 0.2)',
-              border: '1px solid var(--card-border)',
-              borderRadius: '12px',
+              backgroundColor: 'var(--input-bg)',
+              border: '1px solid var(--input-border)',
+              borderRadius: 'var(--radius-md)',
               padding: '14px 16px',
               color: 'var(--text-main)',
               fontSize: '13.5px',
-              fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+              fontFamily: 'var(--font-mono)',
               lineHeight: '1.6',
               outline: 'none',
               resize: 'vertical',
@@ -141,17 +139,18 @@ export const TextShareZone: React.FC<TextShareZoneProps> = ({
                 alignItems: 'center',
                 gap: '8px',
                 padding: '10px 20px',
-                backgroundColor: disabled || !inputText.trim() ? 'rgba(255, 255, 255, 0.1)' : 'var(--btn-primary-bg)',
-                color: disabled || !inputText.trim() ? 'var(--text-muted)' : 'var(--btn-primary-text)',
-                border: 'none',
-                borderRadius: '10px',
+                backgroundColor: disabled || !inputText.trim() ? 'var(--bg-secondary)' : 'var(--button-primary)',
+                color: disabled || !inputText.trim() ? 'var(--text-muted)' : 'var(--button-primary-text)',
+                border: disabled || !inputText.trim() ? '1px solid var(--border)' : 'none',
+                borderRadius: 'var(--radius-md)',
                 fontSize: '14px',
+                fontFamily: 'var(--font-sans)',
                 fontWeight: 500,
                 cursor: disabled || !inputText.trim() ? 'not-allowed' : 'pointer',
                 transition: 'all 0.2s ease',
               }}
             >
-              <Send size={15} /> Send Snippet
+              <Send size={14} /> Send Snippet
             </button>
           </div>
         </form>
@@ -163,8 +162,8 @@ export const TextShareZone: React.FC<TextShareZoneProps> = ({
           <h2
             style={{
               color: 'var(--text-main)',
-              fontSize: '18px',
-              fontWeight: 500,
+              fontSize: '22px',
+              fontWeight: 400,
               margin: 0,
               fontFamily: 'var(--font-serif)',
               display: 'flex',
@@ -188,10 +187,9 @@ export const TextShareZone: React.FC<TextShareZoneProps> = ({
                 key={item.id}
                 style={{
                   backgroundColor: 'var(--card-bg)',
-                  border: '1px solid var(--card-border)',
-                  borderRadius: '16px',
+                  border: '1px solid var(--border)',
+                  borderRadius: 'var(--radius-lg)',
                   padding: '18px 20px',
-                  backdropFilter: 'blur(16px)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '12px',
@@ -209,14 +207,15 @@ export const TextShareZone: React.FC<TextShareZoneProps> = ({
                     <span
                       style={{
                         fontSize: '11px',
-                        fontWeight: 600,
+                        fontWeight: 500,
+                        fontFamily: 'var(--font-sans)',
                         textTransform: 'uppercase',
                         letterSpacing: '0.8px',
                         padding: '4px 10px',
-                        borderRadius: '20px',
-                        backgroundColor: isSent ? 'rgba(59, 130, 246, 0.15)' : 'rgba(16, 185, 129, 0.15)',
-                        color: isSent ? '#60a5fa' : '#34d399',
-                        border: `1px solid ${isSent ? 'rgba(59, 130, 246, 0.3)' : 'rgba(16, 185, 129, 0.3)'}`,
+                        borderRadius: '999px',
+                        backgroundColor: 'var(--bg-secondary)',
+                        color: 'var(--text-muted)',
+                        border: '1px solid var(--border)',
                       }}
                     >
                       {isSent ? 'Sent by You' : 'Received'}
@@ -229,9 +228,10 @@ export const TextShareZone: React.FC<TextShareZoneProps> = ({
                         gap: '4px',
                         color: 'var(--text-dim)',
                         fontSize: '12px',
+                        fontFamily: 'var(--font-sans)',
                       }}
                     >
-                      <Clock size={13} /> {formattedTime}
+                      <Clock size={12} /> {formattedTime}
                     </span>
                   </div>
 
@@ -242,11 +242,12 @@ export const TextShareZone: React.FC<TextShareZoneProps> = ({
                       alignItems: 'center',
                       gap: '6px',
                       padding: '6px 12px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                      border: '1px solid var(--card-border)',
-                      borderRadius: '8px',
+                      backgroundColor: 'var(--bg-secondary)',
+                      border: '1px solid var(--border)',
+                      borderRadius: 'var(--radius-sm)',
                       color: 'var(--text-main)',
                       fontSize: '12px',
+                      fontFamily: 'var(--font-sans)',
                       fontWeight: 500,
                       cursor: 'pointer',
                       transition: 'all 0.2s ease',
@@ -254,11 +255,11 @@ export const TextShareZone: React.FC<TextShareZoneProps> = ({
                   >
                     {isCopied ? (
                       <>
-                        <Check size={14} color="#10b981" /> Copied!
+                        <Check size={13} color="var(--success)" /> Copied!
                       </>
                     ) : (
                       <>
-                        <Copy size={14} /> Copy Code
+                        <Copy size={13} /> Copy Code
                       </>
                     )}
                   </button>
@@ -267,13 +268,13 @@ export const TextShareZone: React.FC<TextShareZoneProps> = ({
                 {/* Pre / Code Block */}
                 <pre
                   style={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.35)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                    borderRadius: '10px',
+                    backgroundColor: 'var(--bg-secondary)',
+                    border: '1px solid var(--border)',
+                    borderRadius: 'var(--radius-md)',
                     padding: '14px 16px',
                     margin: 0,
-                    color: '#e2e8f0',
-                    fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+                    color: 'var(--text-main)',
+                    fontFamily: 'var(--font-mono)',
                     fontSize: '13px',
                     lineHeight: '1.5',
                     whiteSpace: 'pre-wrap',

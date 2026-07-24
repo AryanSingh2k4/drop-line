@@ -21,15 +21,13 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
     <div
       style={{
         backgroundColor: 'var(--card-bg)',
-        border: '1px solid var(--card-border)',
-        borderRadius: '16px',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius-lg)',
         padding: '16px 20px',
         display: 'flex',
         alignItems: 'center',
         gap: '16px',
         marginBottom: '12px',
-        backdropFilter: 'blur(12px)',
-        boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
       }}
     >
       {/* Thumbnail or Icon */}
@@ -37,9 +35,9 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
         style={{
           width: '44px',
           height: '44px',
-          borderRadius: '10px',
-          backgroundColor: 'rgba(255, 255, 255, 0.05)',
-          border: '1px solid var(--card-border)',
+          borderRadius: 'var(--radius-sm)',
+          backgroundColor: 'var(--bg-secondary)',
+          border: '1px solid var(--border)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -75,6 +73,7 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
             style={{
               color: 'var(--text-main)',
               fontSize: '14px',
+              fontFamily: 'var(--font-sans)',
               fontWeight: 500,
               whiteSpace: 'nowrap',
               overflow: 'hidden',
@@ -87,11 +86,12 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
           <span
             style={{
               padding: '2px 8px',
-              borderRadius: '6px',
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid var(--card-border)',
+              borderRadius: 'var(--radius-sm)',
+              backgroundColor: 'var(--bg-secondary)',
+              border: '1px solid var(--border)',
               color: 'var(--text-muted)',
               fontSize: '11px',
+              fontFamily: 'var(--font-sans)',
               fontWeight: 500,
             }}
           >
@@ -104,9 +104,9 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
           <div
             style={{
               flex: 1,
-              height: '5px',
-              backgroundColor: 'rgba(255, 255, 255, 0.08)',
-              borderRadius: '4px',
+              height: '4px',
+              backgroundColor: 'var(--bg-secondary)',
+              borderRadius: '2px',
               overflow: 'hidden',
             }}
           >
@@ -116,22 +116,22 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
                 height: '100%',
                 backgroundColor:
                   file.status === 'error'
-                    ? '#ef4444'
+                    ? 'var(--error)'
                     : file.status === 'completed'
-                    ? '#10b981'
+                    ? 'var(--success)'
                     : 'var(--text-main)',
                 transition: 'width 0.2s ease',
               }}
             />
           </div>
 
-          <span style={{ color: 'var(--text-dim)', fontSize: '12px', minWidth: '55px', textAlign: 'right' }}>
+          <span style={{ color: 'var(--text-dim)', fontSize: '12px', fontFamily: 'var(--font-sans)', minWidth: '55px', textAlign: 'right' }}>
             {file.status === 'transferring' ? `${file.progress}%` : formatSize(file.size)}
           </span>
         </div>
 
         {file.status === 'transferring' && file.speed && (
-          <div style={{ color: 'var(--text-dim)', fontSize: '11px', marginTop: '4px' }}>
+          <div style={{ color: 'var(--text-dim)', fontSize: '11px', fontFamily: 'var(--font-sans)', marginTop: '4px' }}>
             Speed: {file.speed}
           </div>
         )}
@@ -145,14 +145,15 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
             download={file.name}
             style={{
               padding: '8px 14px',
-              backgroundColor: 'var(--btn-primary-bg)',
-              color: 'var(--btn-primary-text)',
-              borderRadius: '8px',
+              backgroundColor: 'var(--button-primary)',
+              color: 'var(--button-primary-text)',
+              borderRadius: 'var(--radius-sm)',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
               textDecoration: 'none',
               fontSize: '13px',
+              fontFamily: 'var(--font-sans)',
               fontWeight: 500,
             }}
           >
@@ -160,13 +161,13 @@ export const FileCard: React.FC<FileCardProps> = ({ file }) => {
           </a>
         )}
         {file.status === 'completed' && !file.url && (
-          <CheckCircle2 size={22} color="#10b981" />
+          <CheckCircle2 size={20} color="var(--success)" />
         )}
         {file.status === 'transferring' && (
-          <Loader2 size={22} className="spin" color="var(--text-muted)" />
+          <Loader2 size={20} className="spin" color="var(--text-muted)" />
         )}
         {file.status === 'error' && (
-          <AlertCircle size={22} color="#ef4444" />
+          <AlertCircle size={20} color="var(--error)" />
         )}
       </div>
 

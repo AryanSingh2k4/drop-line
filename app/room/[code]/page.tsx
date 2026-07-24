@@ -41,7 +41,6 @@ export default function RoomPage() {
         minHeight: '100vh',
         width: '100%',
         backgroundColor: 'var(--bg-primary)',
-        background: 'radial-gradient(circle at 50% 0%, var(--bg-secondary) 0%, var(--bg-primary) 70%)',
         padding: '48px 24px',
         boxSizing: 'border-box',
         display: 'flex',
@@ -67,13 +66,13 @@ export default function RoomPage() {
               gap: '8px',
               color: 'var(--text-muted)',
               fontSize: '14px',
+              fontFamily: 'var(--font-sans)',
               fontWeight: 500,
               padding: '8px 14px',
-              borderRadius: '10px',
-              backgroundColor: 'var(--card-bg)',
-              border: '1px solid var(--card-border)',
-              backdropFilter: 'blur(12px)',
-              transition: 'all 0.2s ease',
+              borderRadius: 'var(--radius-sm)',
+              backgroundColor: 'var(--bg-secondary)',
+              border: '1px solid var(--border)',
+              transition: 'background-color 0.2s ease',
             }}
           >
             <ArrowLeft size={16} /> Leave Room
@@ -86,15 +85,13 @@ export default function RoomPage() {
         <div
           style={{
             backgroundColor: 'var(--card-bg)',
-            border: '1px solid var(--card-border)',
-            borderRadius: '20px',
+            border: '1px solid var(--border)',
+            borderRadius: 'var(--radius-xl)',
             padding: '28px 32px',
-            backdropFilter: 'blur(16px)',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             marginBottom: '24px',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
           }}
         >
           <div>
@@ -102,6 +99,7 @@ export default function RoomPage() {
               style={{
                 color: 'var(--text-dim)',
                 fontSize: '12px',
+                fontFamily: 'var(--font-sans)',
                 fontWeight: 600,
                 textTransform: 'uppercase',
                 letterSpacing: '1.5px',
@@ -114,10 +112,10 @@ export default function RoomPage() {
             <h1
               style={{
                 color: 'var(--text-main)',
-                fontSize: '36px',
-                fontFamily: 'monospace',
+                fontSize: '32px',
+                fontFamily: 'var(--font-mono)',
                 fontWeight: 700,
-                letterSpacing: '6px',
+                letterSpacing: '4px',
                 margin: 0,
               }}
             >
@@ -134,17 +132,18 @@ export default function RoomPage() {
               padding: '12px 20px',
               backgroundColor: 'var(--btn-secondary-bg)',
               border: '1px solid var(--btn-secondary-border)',
-              borderRadius: '12px',
+              borderRadius: 'var(--radius-md)',
               color: 'var(--btn-secondary-text)',
               fontSize: '14px',
+              fontFamily: 'var(--font-sans)',
               fontWeight: 500,
               cursor: 'pointer',
-              transition: 'all 0.2s ease',
+              transition: 'background-color 0.2s ease',
             }}
           >
             {copied ? (
               <>
-                <Check size={16} color="#10b981" /> Link Copied!
+                <Check size={16} color="var(--success)" /> Link Copied!
               </>
             ) : (
               <>
@@ -161,17 +160,16 @@ export default function RoomPage() {
             gap: '24px',
             marginBottom: '24px',
             padding: '14px 20px',
-            borderRadius: '12px',
-            backgroundColor: 'var(--card-bg)',
-            border: '1px solid var(--card-border)',
-            backdropFilter: 'blur(12px)',
+            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'var(--bg-secondary)',
+            border: '1px solid var(--border)',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', fontSize: '13px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', fontSize: '13px', fontFamily: 'var(--font-sans)' }}>
             <ShieldCheck size={16} color="var(--text-main)" />
             <span>End-to-End Peer-to-Peer</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', fontSize: '13px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', fontSize: '13px', fontFamily: 'var(--font-sans)' }}>
             <Zap size={16} color="var(--text-main)" />
             <span>Zero Storage / Direct Speed</span>
           </div>
@@ -183,10 +181,10 @@ export default function RoomPage() {
             display: 'flex',
             gap: '8px',
             marginBottom: '20px',
-            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            backgroundColor: 'var(--bg-secondary)',
             padding: '6px',
-            borderRadius: '14px',
-            border: '1px solid var(--card-border)',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border)',
           }}
         >
           <button
@@ -198,15 +196,18 @@ export default function RoomPage() {
               justifyContent: 'center',
               gap: '8px',
               padding: '10px 16px',
-              borderRadius: '10px',
+              borderRadius: 'var(--radius-sm)',
               border: 'none',
               backgroundColor: activeTab === 'files' ? 'var(--card-bg)' : 'transparent',
               color: activeTab === 'files' ? 'var(--text-main)' : 'var(--text-muted)',
               fontWeight: 500,
               fontSize: '14px',
+              fontFamily: 'var(--font-sans)',
               cursor: 'pointer',
               transition: 'all 0.2s ease',
-              boxShadow: activeTab === 'files' ? '0 4px 12px rgba(0, 0, 0, 0.1)' : 'none',
+              borderWidth: activeTab === 'files' ? '1px' : '0px',
+              borderStyle: 'solid',
+              borderColor: activeTab === 'files' ? 'var(--border)' : 'transparent',
             }}
           >
             <FileUp size={16} /> File Sharing {files.length > 0 && `(${files.length})`}
@@ -221,15 +222,18 @@ export default function RoomPage() {
               justifyContent: 'center',
               gap: '8px',
               padding: '10px 16px',
-              borderRadius: '10px',
+              borderRadius: 'var(--radius-sm)',
               border: 'none',
               backgroundColor: activeTab === 'text' ? 'var(--card-bg)' : 'transparent',
               color: activeTab === 'text' ? 'var(--text-main)' : 'var(--text-muted)',
               fontWeight: 500,
               fontSize: '14px',
+              fontFamily: 'var(--font-sans)',
               cursor: 'pointer',
               transition: 'all 0.2s ease',
-              boxShadow: activeTab === 'text' ? '0 4px 12px rgba(0, 0, 0, 0.1)' : 'none',
+              borderWidth: activeTab === 'text' ? '1px' : '0px',
+              borderStyle: 'solid',
+              borderColor: activeTab === 'text' ? 'var(--border)' : 'transparent',
             }}
           >
             <Code2 size={16} /> Code & Text {textItems.length > 0 && `(${textItems.length})`}
@@ -251,8 +255,8 @@ export default function RoomPage() {
                 <h2
                   style={{
                     color: 'var(--text-main)',
-                    fontSize: '18px',
-                    fontWeight: 500,
+                    fontSize: '22px',
+                    fontWeight: 400,
                     marginBottom: '16px',
                     fontFamily: 'var(--font-serif)',
                   }}

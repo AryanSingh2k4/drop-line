@@ -51,18 +51,16 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
       onDrop={handleDrop}
       onClick={() => !disabled && fileInputRef.current?.click()}
       style={{
-        border: `2px dashed ${
-          isDragging ? 'var(--text-main)' : 'var(--card-border)'
+        border: `1.5px dashed ${
+          isDragging ? 'var(--text-main)' : 'var(--border)'
         }`,
-        borderRadius: '20px',
+        borderRadius: 'var(--radius-xl)',
         padding: '48px 24px',
-        backgroundColor: isDragging ? 'rgba(255, 255, 255, 0.06)' : 'var(--card-bg)',
-        backdropFilter: 'blur(16px)',
+        backgroundColor: isDragging ? 'var(--bg-secondary)' : 'var(--card-bg)',
         textAlign: 'center',
         cursor: disabled ? 'not-allowed' : 'pointer',
-        transition: 'all 0.25s ease',
+        transition: 'all 0.2s ease',
         opacity: disabled ? 0.6 : 1,
-        boxShadow: isDragging ? '0 8px 32px rgba(0,0,0,0.2)' : 'none',
       }}
     >
       <input
@@ -84,16 +82,16 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
           color: 'var(--text-muted)',
         }}
       >
-        <Upload size={28} />
-        <ImageIcon size={28} />
-        <FileText size={28} />
+        <Upload size={26} />
+        <ImageIcon size={26} />
+        <FileText size={26} />
       </div>
 
       <h3
         style={{
           color: 'var(--text-main)',
           marginBottom: '8px',
-          fontSize: '18px',
+          fontSize: '20px',
           fontFamily: 'var(--font-serif)',
           fontWeight: 400,
         }}
@@ -103,8 +101,8 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
           : 'Drag & Drop files here or click to browse'}
       </h3>
 
-      <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
-        Supports PDFs, PNGs, JPGs, GIFs & WebP images
+      <p style={{ color: 'var(--text-muted)', fontSize: '14px', fontFamily: 'var(--font-sans)' }}>
+        Supports PDFs, PNGs, JPGs, GIFs & WebP images (Up to 100 MB)
       </p>
 
       {!disabled && (
@@ -113,10 +111,11 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
           style={{
             marginTop: '20px',
             padding: '12px 24px',
-            backgroundColor: 'var(--btn-primary-bg)',
-            color: 'var(--btn-primary-text)',
-            borderRadius: '12px',
+            backgroundColor: 'var(--button-primary)',
+            color: 'var(--button-primary-text)',
+            borderRadius: 'var(--radius-md)',
             fontSize: '14px',
+            fontFamily: 'var(--font-sans)',
             fontWeight: 500,
             display: 'inline-block',
           }}

@@ -38,15 +38,15 @@ export default function Home() {
       {/* Hero Header */}
       <section className={styles.heroSection}>
         <div className={styles.badge}>
-          <Sparkles size={14} />
+          <Sparkles size={13} />
           <span>Dropline P2P Protocol</span>
         </div>
 
         <h1 className={styles.title}>
-          Share files directly<br />device to device.
+          Send it. Simply.
         </h1>
         <p className={styles.subtitle}>
-          No cloud uploads. No size limits. Completely free and private peer-to-peer WebRTC file transfer.
+          Your private line for peer-to-peer file sharing.
         </p>
       </section>
 
@@ -57,11 +57,11 @@ export default function Home() {
           <div className={styles.cardHeader}>
             <h2 className={styles.cardTitle}>Start a New Room</h2>
             <p className={styles.cardDesc}>
-              Generate a unique room code and share files instantly with any device nearby or remote.
+              Generate a 6-character room code to establish an instant end-to-end encrypted connection.
             </p>
           </div>
           <button className={styles.primaryButton} onClick={handleCreateRoom}>
-            Create Room <ArrowRight size={18} />
+            Create Room <ArrowRight size={16} />
           </button>
         </div>
 
@@ -70,13 +70,13 @@ export default function Home() {
           <div className={styles.cardHeader}>
             <h2 className={styles.cardTitle}>Join a Room</h2>
             <p className={styles.cardDesc}>
-              Have a 6-digit code? Enter it below to establish a direct P2P connection.
+              Have a 6-digit code? Enter it below to connect directly with the other device.
             </p>
           </div>
           <form onSubmit={handleJoinRoom} className={styles.formGroup}>
             <input
               type="text"
-              placeholder="Enter 6-digit code (e.g. A3X9K2)"
+              placeholder="Enter 6-character code"
               className={styles.input}
               value={roomCode}
               onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
@@ -97,31 +97,31 @@ export default function Home() {
       <section className={styles.featuresGrid}>
         <div className={styles.featureItem}>
           <div className={styles.featureIcon}>
-            <Zap size={20} />
+            <Zap size={18} />
           </div>
           <h3 className={styles.featureTitle}>100% Peer-to-Peer</h3>
           <p className={styles.featureDesc}>
-            Data transfers directly between browsers over encrypted WebRTC channels without touching any cloud storage.
+            Data transfers directly between browsers over WebRTC channels without touching any cloud servers.
           </p>
         </div>
 
         <div className={styles.featureItem}>
           <div className={styles.featureIcon}>
-            <Shield size={20} />
+            <Shield size={18} />
           </div>
-          <h3 className={styles.featureTitle}>Zero Logs & Storage</h3>
+          <h3 className={styles.featureTitle}>Zero Storage & Logs</h3>
           <p className={styles.featureDesc}>
-            Your files never leave your device memory. Once the room session ends, all connection metadata vanishes.
+            Files exist only in device memory during transfer. Once the session ends, metadata vanishes.
           </p>
         </div>
 
         <div className={styles.featureItem}>
           <div className={styles.featureIcon}>
-            <Lock size={20} />
+            <Lock size={18} />
           </div>
           <h3 className={styles.featureTitle}>Cross-Network</h3>
           <p className={styles.featureDesc}>
-            Seamlessly connect devices across different Wi-Fi networks, mobile data, or strict firewalls with STUN/TURN traversal.
+            Connect devices across different Wi-Fi networks, mobile data, or strict firewalls seamlessly.
           </p>
         </div>
       </section>

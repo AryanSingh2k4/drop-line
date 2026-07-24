@@ -5,13 +5,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 24px;
-  background: radial-gradient(circle at 50% 0%, var(--bg-secondary) 0%, var(--bg-primary) 70%);
+  padding: 64px 24px;
+  background-color: var(--bg-primary);
   box-sizing: border-box;
 }
 
 .heroSection {
-  max-width: 720px;
+  max-width: 680px;
   width: 100%;
   text-align: center;
   margin-bottom: 48px;
@@ -21,32 +21,33 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 16px;
+  padding: 6px 14px;
   border-radius: 999px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  backdrop-filter: blur(12px);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   margin-bottom: 24px;
+  letter-spacing: 0.5px;
 }
 
 .title {
   font-family: var(--font-serif);
-  font-size: clamp(38px, 6vw, 64px);
-  font-weight: 350;
+  font-size: clamp(48px, 5.5vw, 64px);
+  font-weight: 400;
   line-height: 1.1;
   color: var(--text-main);
-  letter-spacing: -0.02em;
-  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
 }
 
 .subtitle {
-  font-size: 18px;
-  line-height: 1.6;
+  font-family: var(--font-serif);
+  font-size: 20px;
+  line-height: 1.5;
   color: var(--text-muted);
-  max-width: 540px;
+  max-width: 520px;
   margin: 0 auto;
 }
 
@@ -55,27 +56,24 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 24px;
-  max-width: 840px;
+  max-width: 800px;
   width: 100%;
   margin-bottom: 64px;
 }
 
 .card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   padding: 32px;
-  backdrop-filter: blur(16px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: all 0.25s ease;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  transition: border-color 0.2s ease;
 }
 
 .card:hover {
-  border-color: var(--card-border-hover);
-  transform: translateY(-2px);
+  border-color: var(--text-muted);
 }
 
 .cardHeader {
@@ -84,36 +82,37 @@
 
 .cardTitle {
   font-family: var(--font-serif);
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 400;
   color: var(--text-main);
   margin-bottom: 8px;
 }
 
 .cardDesc {
-  font-size: 14px;
+  font-family: var(--font-sans);
+  font-size: 15px;
   color: var(--text-muted);
   line-height: 1.5;
 }
 
 .primaryButton {
   width: 100%;
-  padding: 16px 24px;
-  background: var(--btn-primary-bg);
-  color: var(--btn-primary-text);
-  border-radius: 12px;
+  padding: 14px 24px;
+  background-color: var(--button-primary);
+  color: var(--button-primary-text);
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
   font-size: 15px;
   font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  gap: 8px;
+  transition: opacity 0.2s ease;
 }
 
 .primaryButton:hover {
-  opacity: 0.92;
-  transform: scale(0.99);
+  opacity: 0.9;
 }
 
 .formGroup {
@@ -124,12 +123,14 @@
 
 .input {
   width: 100%;
-  padding: 14px 18px;
-  background: var(--input-bg);
+  padding: 14px 16px;
+  background-color: var(--input-bg);
   border: 1px solid var(--input-border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   color: var(--text-main);
-  font-size: 15px;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 2px;
   outline: none;
   transition: border-color 0.2s ease;
   box-sizing: border-box;
@@ -141,22 +142,26 @@
 
 .input::placeholder {
   color: var(--text-dim);
+  font-family: var(--font-sans);
+  letter-spacing: normal;
+  font-size: 14px;
 }
 
 .secondaryButton {
   width: 100%;
   padding: 14px 20px;
-  background: var(--btn-secondary-bg);
+  background-color: var(--btn-secondary-bg);
   border: 1px solid var(--btn-secondary-border);
   color: var(--btn-secondary-text);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
   font-size: 15px;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .secondaryButton:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.08);
+  background-color: var(--border);
 }
 
 .secondaryButton:disabled {
@@ -169,34 +174,37 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
-  max-width: 900px;
+  max-width: 800px;
   width: 100%;
-  border-top: 1px solid var(--card-border);
+  border-top: 1px solid var(--border);
   padding-top: 48px;
 }
 
 .featureItem {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   gap: 12px;
 }
 
 .featureIcon {
   padding: 10px;
-  border-radius: 12px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
   color: var(--text-main);
 }
 
 .featureTitle {
+  font-family: var(--font-sans);
   font-size: 15px;
   font-weight: 500;
   color: var(--text-main);
 }
 
 .featureDesc {
+  font-family: var(--font-sans);
   font-size: 13px;
   color: var(--text-muted);
   line-height: 1.5;

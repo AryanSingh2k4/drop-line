@@ -1,75 +1,39 @@
 :root {
-  /* Premium Dark / Light Palette */
-  --bg-primary: #0a0a0c;
-  --bg-secondary: #121215;
-  --card-bg: rgba(255, 255, 255, 0.03);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --card-border-hover: rgba(255, 255, 255, 0.16);
+  /* Dark Mode Only Palette */
+  --bg-primary: #121212;
+  --bg-secondary: #1B1B1A;
+  --card-bg: #222220;
+  --text-main: #F4F2EA;
+  --text-muted: #B9B6AC;
+  --text-dim: #85827A;
+  --border: #383733;
+  --button-primary: #E7E4D9;
+  --button-primary-text: #151514;
+  --success: #92B38D;
+  --warning: #D2A45B;
+  --error: #D78379;
 
-  --text-main: #f4f4f6;
-  --text-muted: #8e8d97;
-  --text-dim: #5c5b66;
+  /* Aliases & Helpers */
+  --btn-primary-bg: var(--button-primary);
+  --btn-primary-text: var(--button-primary-text);
+  --btn-secondary-bg: var(--bg-secondary);
+  --btn-secondary-border: var(--border);
+  --btn-secondary-text: var(--text-main);
+  --card-border: var(--border);
+  --input-bg: #1B1B1A;
+  --input-border: var(--border);
+  --input-focus: var(--button-primary);
 
-  --accent-glow: rgba(226, 225, 218, 0.08);
-  --btn-primary-bg: #e2e1da;
-  --btn-primary-text: #0a0a0c;
-  --btn-secondary-bg: rgba(255, 255, 255, 0.05);
-  --btn-secondary-border: rgba(255, 255, 255, 0.12);
-  --btn-secondary-text: #f4f4f6;
+  /* Fonts */
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, monospace;
 
-  --input-bg: rgba(0, 0, 0, 0.4);
-  --input-border: rgba(255, 255, 255, 0.12);
-  --input-focus: #e2e1da;
-
-  /* Aliases for legacy component compatibility */
-  --surface-base: var(--bg-primary);
-  --surface-elevated: var(--bg-secondary);
-  --surface-card: var(--card-bg);
-  --surface-white: var(--card-bg);
-  --text-primary: var(--text-main);
-  --text-secondary: var(--text-muted);
-  --text-tertiary: var(--text-dim);
-  --border-subtle: var(--card-border);
-  --action-fill: var(--btn-primary-bg);
-
-  /* Typography */
-  --font-serif: 'Anthropic Serif', Georgia, serif;
-  --font-sans: 'Anthropic Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg-primary: #faf9f5;
-    --bg-secondary: #f3f2ec;
-    --card-bg: rgba(255, 255, 255, 0.7);
-    --card-border: rgba(0, 0, 0, 0.08);
-    --card-border-hover: rgba(0, 0, 0, 0.16);
-
-    --text-main: #121212;
-    --text-muted: #66645e;
-    --text-dim: #9c9a92;
-
-    --accent-glow: rgba(0, 0, 0, 0.03);
-    --btn-primary-bg: #121212;
-    --btn-primary-text: #faf9f5;
-    --btn-secondary-bg: rgba(0, 0, 0, 0.03);
-    --btn-secondary-border: rgba(0, 0, 0, 0.12);
-    --btn-secondary-text: #121212;
-
-    --input-bg: #ffffff;
-    --input-border: rgba(0, 0, 0, 0.12);
-    --input-focus: #121212;
-
-    --surface-base: var(--bg-primary);
-    --surface-elevated: var(--bg-secondary);
-    --surface-card: var(--card-bg);
-    --surface-white: #ffffff;
-    --text-primary: var(--text-main);
-    --text-secondary: var(--text-muted);
-    --text-tertiary: var(--text-dim);
-    --border-subtle: var(--card-border);
-    --action-fill: var(--btn-primary-bg);
-  }
+  /* Shape Tokens */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
 }
 
 html,
@@ -81,8 +45,11 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-main);
   font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  color-scheme: dark;
 }
 
 * {
@@ -99,6 +66,16 @@ a {
 button {
   border: none;
   background: none;
-  font-family: inherit;
+  font-family: var(--font-sans);
   cursor: pointer;
+}
+
+input, textarea {
+  font-family: var(--font-sans);
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.92); opacity: 0.8; }
+  50% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(0.92); opacity: 0.8; }
 }
