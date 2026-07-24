@@ -16,11 +16,19 @@ export interface FileItem {
   speed?: string;
 }
 
+export interface TextItem {
+  id: string;
+  content: string;
+  timestamp: number;
+  direction: 'sent' | 'received';
+}
+
 const CHUNK_SIZE = 16 * 1024; // 16 KB chunks
 
 export function useWebRTC(roomCode: string) {
   const [peerStatus, setPeerStatus] = useState<'connecting' | 'connected' | 'disconnected' | 'failed'>('connecting');
   const [files, setFiles] = useState<FileItem[]>([]);
+  const [textItems, setTextItems] = useState<TextItem[]>([]);
   const [isPeerConnected, setIsPeerConnected] = useState<boolean>(false);
 
   const peerConnectionRef = useRef<RTCPeerConnection | null>(null);
@@ -106,6 +114,16 @@ export function useWebRTC(roomCode: string) {
               );
               incomingFileMetaRef.current = null;
             }
+          } else if (msg.type === 'text-snippet') {
+            setTextItems((prev) => [
+              {
+                id: msg.id,
+                content: msg.content,
+                timestamp: msg.timestamp || Date.now(),
+                direction: 'received',
+              },
+              ...prev,
+            ]);
           }
         } catch (e) {
           console.error('Error parsing control message:', e);
@@ -374,10 +392,42 @@ export function useWebRTC(roomCode: string) {
     processQueue();
   }, [processQueue]);
 
+  const sendTextMessage = useCallback((content: string) => {
+    const dc = dataChannelRef.current;
+    if (!dc || dc.readyState !== 'open') {
+      alert('Peer connection not ready!');
+      return;
+    }
+
+    const id = Math.random().toString(36).substring(2, 9);
+    const timestamp = Date.now();
+
+    dc.send(
+      JSON.stringify({
+        type: 'text-snippet',
+        id,
+        content,
+        timestamp,
+      })
+    );
+
+    setTextItems((prev) => [
+      {
+        id,
+        content,
+        timestamp,
+        direction: 'sent',
+      },
+      ...prev,
+    ]);
+  }, []);
+
   return {
     peerStatus,
     isPeerConnected,
     files,
     sendFile,
+    textItems,
+    sendTextMessage,
   };
 }

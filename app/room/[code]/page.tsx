@@ -6,15 +6,17 @@ import { useWebRTC } from '@/hooks/useWebRTC';
 import { PeerStatus } from '@/components/PeerStatus';
 import { FileDropZone } from '@/components/FileDropZone';
 import { FileCard } from '@/components/FileCard';
-import { Copy, Check, ArrowLeft, ShieldCheck, Zap } from 'lucide-react';
+import { TextShareZone } from '@/components/TextShareZone';
+import { Copy, Check, ArrowLeft, ShieldCheck, Zap, FileUp, Code2 } from 'lucide-react';
 
 export default function RoomPage() {
   const params = useParams();
   const router = useRouter();
   const roomCode = (params.code as string)?.toUpperCase() || '';
   const [copied, setCopied] = useState(false);
+  const [activeTab, setActiveTab] = useState<'files' | 'text'>('files');
 
-  const { peerStatus, isPeerConnected, files, sendFile } = useWebRTC(roomCode);
+  const { peerStatus, isPeerConnected, files, sendFile, textItems, sendTextMessage } = useWebRTC(roomCode);
 
   const handleCopyLink = () => {
     const url = window.location.href;
@@ -175,30 +177,100 @@ export default function RoomPage() {
           </div>
         </div>
 
-        {/* File Dropzone */}
-        <FileDropZone
-          onFilesSelected={handleFilesSelected}
-          disabled={!isPeerConnected}
-        />
+        {/* Navigation Tabs */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '8px',
+            marginBottom: '20px',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            padding: '6px',
+            borderRadius: '14px',
+            border: '1px solid var(--card-border)',
+          }}
+        >
+          <button
+            onClick={() => setActiveTab('files')}
+            style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              padding: '10px 16px',
+              borderRadius: '10px',
+              border: 'none',
+              backgroundColor: activeTab === 'files' ? 'var(--card-bg)' : 'transparent',
+              color: activeTab === 'files' ? 'var(--text-main)' : 'var(--text-muted)',
+              fontWeight: 500,
+              fontSize: '14px',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              boxShadow: activeTab === 'files' ? '0 4px 12px rgba(0, 0, 0, 0.1)' : 'none',
+            }}
+          >
+            <FileUp size={16} /> File Sharing {files.length > 0 && `(${files.length})`}
+          </button>
 
-        {/* Files List Section */}
-        {files.length > 0 && (
-          <div style={{ marginTop: '32px' }}>
-            <h2
-              style={{
-                color: 'var(--text-main)',
-                fontSize: '18px',
-                fontWeight: 500,
-                marginBottom: '16px',
-                fontFamily: 'var(--font-serif)',
-              }}
-            >
-              Transfers ({files.length})
-            </h2>
-            {files.map((file) => (
-              <FileCard key={file.id} file={file} />
-            ))}
+          <button
+            onClick={() => setActiveTab('text')}
+            style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              padding: '10px 16px',
+              borderRadius: '10px',
+              border: 'none',
+              backgroundColor: activeTab === 'text' ? 'var(--card-bg)' : 'transparent',
+              color: activeTab === 'text' ? 'var(--text-main)' : 'var(--text-muted)',
+              fontWeight: 500,
+              fontSize: '14px',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              boxShadow: activeTab === 'text' ? '0 4px 12px rgba(0, 0, 0, 0.1)' : 'none',
+            }}
+          >
+            <Code2 size={16} /> Code & Text {textItems.length > 0 && `(${textItems.length})`}
+          </button>
+        </div>
+
+        {/* Tab Contents */}
+        {activeTab === 'files' ? (
+          <div>
+            {/* File Dropzone */}
+            <FileDropZone
+              onFilesSelected={handleFilesSelected}
+              disabled={!isPeerConnected}
+            />
+
+            {/* Files List Section */}
+            {files.length > 0 && (
+              <div style={{ marginTop: '32px' }}>
+                <h2
+                  style={{
+                    color: 'var(--text-main)',
+                    fontSize: '18px',
+                    fontWeight: 500,
+                    marginBottom: '16px',
+                    fontFamily: 'var(--font-serif)',
+                  }}
+                >
+                  Transfers ({files.length})
+                </h2>
+                {files.map((file) => (
+                  <FileCard key={file.id} file={file} />
+                ))}
+              </div>
+            )}
           </div>
+        ) : (
+          <TextShareZone
+            onSendText={sendTextMessage}
+            disabled={!isPeerConnected}
+            textItems={textItems}
+          />
         )}
       </main>
     </div>
