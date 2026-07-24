@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dropline — Peer-to-Peer File Sharing",
+  title: "Dropline | Peer-to-Peer File Sharing",
   description: "Share PDFs, images, and files directly between devices anywhere. No cloud storage, no size limits, 100% free.",
 };
 
