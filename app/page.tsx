@@ -35,63 +35,69 @@ export default function Home() {
 
   return (
     <div className={styles.pageWrapper}>
-      {/* Hero Header */}
-      <section className={styles.heroSection}>
-        <div className={styles.badge}>
-          <Sparkles size={13} />
-          <span>Dropline P2P Protocol</span>
-        </div>
-
-        <h1 className={styles.title}>
-          Send it. Simply.
-        </h1>
-        <p className={styles.subtitle}>
-          Your private line for peer-to-peer file sharing.
-        </p>
-      </section>
-
-      {/* Main Action Cards */}
-      <section className={styles.cardsGrid}>
-        {/* Create Room Card */}
-        <div className={styles.card}>
-          <div className={styles.cardHeader}>
-            <h2 className={styles.cardTitle}>Start a New Room</h2>
-            <p className={styles.cardDesc}>
-              Generate a 6-character room code to establish an instant end-to-end encrypted connection.
-            </p>
+      <div className={styles.topFold}>
+        {/* Hero Header */}
+        <section className={styles.heroSection}>
+          <div className={styles.badge}>
+            <Sparkles size={13} />
+            <span>Dropline P2P Protocol</span>
           </div>
-          <button className={styles.primaryButton} onClick={handleCreateRoom}>
-            Create Room <ArrowRight size={16} />
-          </button>
-        </div>
 
-        {/* Join Room Card */}
-        <div className={styles.card}>
-          <div className={styles.cardHeader}>
-            <h2 className={styles.cardTitle}>Join a Room</h2>
-            <p className={styles.cardDesc}>
-              Have a 6-digit code? Enter it below to connect directly with the other device.
-            </p>
-          </div>
-          <form onSubmit={handleJoinRoom} className={styles.formGroup}>
-            <input
-              type="text"
-              placeholder="Enter 6-character code"
-              className={styles.input}
-              value={roomCode}
-              onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
-              maxLength={6}
-            />
-            <button
-              type="submit"
-              className={styles.secondaryButton}
-              disabled={!roomCode.trim()}
-            >
-              Connect to Room
+          <h1 className={styles.title}>
+            Send it. Simply.
+          </h1>
+          <p className={styles.subtitle}>
+            Your private line for peer-to-peer file sharing.
+          </p>
+        </section>
+
+        {/* Main Action Cards */}
+        <section className={styles.cardsGrid}>
+          {/* Create Room Card */}
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h2 className={styles.cardTitle}>Start a New Room</h2>
+              <p className={styles.cardDesc}>
+                Generate a 6-character room code to establish an instant end-to-end encrypted connection.
+              </p>
+            </div>
+            <button className={styles.primaryButton} onClick={handleCreateRoom}>
+              Create Room <ArrowRight size={16} />
             </button>
-          </form>
+          </div>
+
+          {/* Join Room Card */}
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h2 className={styles.cardTitle}>Join a Room</h2>
+              <p className={styles.cardDesc}>
+                Have a 6-digit code? Enter it below to connect directly with the other device.
+              </p>
+            </div>
+            <form onSubmit={handleJoinRoom} className={styles.formGroup}>
+              <input
+                type="text"
+                placeholder="Enter 6-character code"
+                className={styles.input}
+                value={roomCode}
+                onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+                maxLength={6}
+              />
+              <button
+                type="submit"
+                className={styles.secondaryButton}
+                disabled={!roomCode.trim()}
+              >
+                Connect to Room
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <div className={styles.bottomNote}>
+          <p>Dropline is an open-source tool built for secure, lightning-fast peer-to-peer file transfers.</p>
         </div>
-      </section>
+      </div>
 
       {/* Value Proposition Features */}
       <section className={styles.featuresGrid}>
