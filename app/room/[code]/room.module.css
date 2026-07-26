@@ -74,11 +74,17 @@
   margin: 0;
 }
 
+.buttonGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .shareButton {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 20px;
+  padding: 10px 16px;
   background-color: var(--btn-secondary-bg);
   border: 1px solid var(--btn-secondary-border);
   border-radius: var(--radius-md);
@@ -94,6 +100,83 @@
 
 .shareButton:hover {
   background-color: var(--border);
+}
+
+.qrButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  font-size: 14px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.qrButton:hover {
+  background-color: var(--border);
+}
+
+/* QR Code Modal Styles */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+.modalContent {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.modalClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.modalClose:hover {
+  color: var(--text-main);
+  background-color: var(--bg-secondary);
+}
+
+.qrBox {
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  display: inline-block;
+  margin: 20px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .infoBanner {
@@ -181,7 +264,8 @@
     letter-spacing: 3px;
   }
 
-  .shareButton {
+  .shareButton,
+  .qrButton {
     padding: 9px 14px;
     font-size: 13px;
     gap: 6px;
@@ -211,16 +295,9 @@
     letter-spacing: 2px;
   }
 
-  .shareButton {
-    padding: 8px 12px;
+  .shareButton,
+  .qrButton {
+    padding: 8px 10px;
     font-size: 12px;
-  }
-
-  .shareTextFull {
-    display: none;
-  }
-
-  .shareTextShort {
-    display: inline;
   }
 }

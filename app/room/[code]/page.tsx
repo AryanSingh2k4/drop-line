@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useWebRTC } from '@/hooks/useWebRTC';
 import { PeerStatus } from '@/components/PeerStatus';
 import { FileDropZone } from '@/components/FileDropZone';
 import { FileCard } from '@/components/FileCard';
 import { TextShareZone } from '@/components/TextShareZone';
-import { Copy, Check, ArrowLeft, ShieldCheck, Zap, FileUp, Code2 } from 'lucide-react';
+import { Copy, Check, ArrowLeft, ShieldCheck, Zap, FileUp, Code2, QrCode, X } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import styles from './room.module.css';
 
 export default function RoomPage() {
@@ -16,11 +17,19 @@ export default function RoomPage() {
   const roomCode = (params.code as string)?.toUpperCase() || '';
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<'files' | 'text'>('files');
+  const [showQrModal, setShowQrModal] = useState(false);
+  const [roomUrl, setRoomUrl] = useState('');
 
   const { peerStatus, isPeerConnected, files, sendFile, textItems, sendTextMessage } = useWebRTC(roomCode);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setRoomUrl(window.location.href);
+    }
+  }, []);
+
   const handleCopyLink = () => {
-    const url = window.location.href;
+    const url = roomUrl || window.location.href;
     navigator.clipboard.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -62,20 +71,31 @@ export default function RoomPage() {
             </h1>
           </div>
 
-          <button
-            onClick={handleCopyLink}
-            className={styles.shareButton}
-          >
-            {copied ? (
-              <>
-                <Check size={16} color="var(--success)" /> <span>Link Copied!</span>
-              </>
-            ) : (
-              <>
-                <Copy size={16} /> <span>Share Room Link</span>
-              </>
-            )}
-          </button>
+          <div className={styles.buttonGroup}>
+            <button
+              onClick={handleCopyLink}
+              className={styles.shareButton}
+            >
+              {copied ? (
+                <>
+                  <Check size={16} color="var(--success)" /> <span>Link Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Copy size={16} /> <span>Share Link</span>
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={() => setShowQrModal(true)}
+              className={styles.qrButton}
+              title="Show QR Code"
+            >
+              <QrCode size={16} />
+              <span>QR Code</span>
+            </button>
+          </div>
         </div>
 
         {/* Security & Info Banner */}
@@ -134,6 +154,40 @@ export default function RoomPage() {
             disabled={!isPeerConnected}
             textItems={textItems}
           />
+        )}
+
+        {/* QR Code Modal */}
+        {showQrModal && (
+          <div className={styles.modalOverlay} onClick={() => setShowQrModal(false)}>
+            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+              <button
+                className={styles.modalClose}
+                onClick={() => setShowQrModal(false)}
+              >
+                <X size={18} />
+              </button>
+
+              <h3 style={{ color: 'var(--text-main)', fontSize: '20px', margin: '0 0 8px 0', fontFamily: 'var(--font-serif)' }}>
+                Scan to Join Room
+              </h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '13px', margin: 0, fontFamily: 'var(--font-sans)' }}>
+                Point your phone camera at this QR code to connect instantly.
+              </p>
+
+              <div className={styles.qrBox}>
+                <QRCodeSVG
+                  value={roomUrl || `https://droplinegg.vercel.app/room/${roomCode}`}
+                  size={190}
+                  level="M"
+                  marginSize={1}
+                />
+              </div>
+
+              <div style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)', padding: '8px 12px', borderRadius: 'var(--radius-md)', color: 'var(--text-dim)', fontSize: '12px', fontFamily: 'var(--font-mono)', letterSpacing: '2px' }}>
+                {roomCode}
+              </div>
+            </div>
+          </div>
         )}
       </main>
     </div>
