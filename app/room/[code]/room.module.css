@@ -1,0 +1,226 @@
+.pageWrapper {
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--bg-primary);
+  padding: 48px 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mainContainer {
+  max-width: 760px;
+  width: 100%;
+}
+
+.headerBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 12px;
+}
+
+.leaveButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.leaveButton:hover {
+  background-color: var(--border);
+}
+
+.roomCard {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.roomCodeLabel {
+  color: var(--text-dim);
+  font-size: 12px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.roomCodeValue {
+  color: var(--text-main);
+  font-size: 32px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 4px;
+  margin: 0;
+}
+
+.shareButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background-color: var(--btn-secondary-bg);
+  border: 1px solid var(--btn-secondary-border);
+  border-radius: var(--radius-md);
+  color: var(--btn-secondary-text);
+  font-size: 14px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.shareButton:hover {
+  background-color: var(--border);
+}
+
+.infoBanner {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-family: var(--font-sans);
+}
+
+.tabContainer {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  background-color: var(--bg-secondary);
+  padding: 6px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.tabButton {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-weight: 500;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tabActive {
+  background-color: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+}
+
+.tabInactive {
+  background-color: transparent;
+  color: var(--text-muted);
+  border: 1px solid transparent;
+}
+
+.transfersTitle {
+  color: var(--text-main);
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 16px;
+  font-family: var(--font-serif);
+}
+
+/* Responsive Rules for Mobile */
+@media (max-width: 640px) {
+  .pageWrapper {
+    padding: 24px 16px;
+  }
+
+  .headerBar {
+    margin-bottom: 20px;
+  }
+
+  .roomCard {
+    padding: 20px 20px;
+    margin-bottom: 16px;
+  }
+
+  .roomCodeValue {
+    font-size: 24px;
+    letter-spacing: 3px;
+  }
+
+  .shareButton {
+    padding: 9px 14px;
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .infoBanner {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+  }
+
+  .tabButton {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 420px) {
+  .roomCard {
+    padding: 16px;
+    gap: 10px;
+  }
+
+  .roomCodeValue {
+    font-size: 20px;
+    letter-spacing: 2px;
+  }
+
+  .shareButton {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .shareTextFull {
+    display: none;
+  }
+
+  .shareTextShort {
+    display: inline;
+  }
+}
